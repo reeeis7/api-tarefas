@@ -1,0 +1,117 @@
+{
+"swagger": "2.0",
+"info": {
+"title": "Tasks API",
+"description": "Tasks API Documentation with Swagger",
+"version": "1.0.0"
+},
+"host": " 127.0.0.1:5000 ",
+"schemes": ["http"],
+"paths": {
+"/tasks": {
+"get": {
+"summary": "Returns all tasks",
+"responses": {
+"200": {
+"description": "List of tasks"
+}
+}
+},
+"publish": {
+"summary": "Create a new task",
+"parameters": [
+{
+"in": "body",
+"name": "body",
+"required": true,
+"schema": {
+"type": "object",
+"properties": {
+"title": { "type": "string" },
+"description": { "type": "string" },
+"status": { "type": "string" },
+"priority": { "type": "string" },
+"creation_date": { "type": "string" },
+"responsible": { "type": "string" }
+}
+}
+}
+],
+"responses": {
+"201": {
+"description": "Task created successfully"
+}
+}
+}
+},
+"/tasks/{task_id}": {
+"get": {
+"summary": "Returns a task by ID",
+"parameters": [
+{
+"name": "task_id",
+"in": "path",
+"required": true,
+"type": "integer"
+}
+],
+"responses": {
+"200": {
+"description": "Task found"
+},
+"404": {
+"description": "Task not found"
+}
+}
+},
+"put": {
+"summary": "Updates an existing task",
+"parameters": [
+{
+"name": "task_id",
+"in": "path",
+"required": true,
+"type": "integer"
+},
+{
+"in": "body",
+"name": "body",
+"required": true,
+"schema": {
+"type": "object",
+"properties": {
+"title": { "type": "string" },
+"description": { "type": "string" },
+"status": { "type": "string" },
+"priority": { "type": "string" },
+"creation_date": { "type": "string" },
+"responsible": { "type": "string" }
+}
+}
+}
+],
+"responses": {
+"200": {
+"description": "Task updated successfully"
+}
+}
+},
+"delete": {
+"summary": "Deletes a task",
+"parameters": [
+{
+"name": "task_id",
+"in": "path",
+"required": true,
+"type": "integer"
+}
+],
+"responses": {
+"200": {
+"description": "Task successful"
+}
+}
+}
+}
+}
+}
