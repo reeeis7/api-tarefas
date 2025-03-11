@@ -1,55 +1,35 @@
 from flask import Flask, request, jsonify
 from flasgger import Swagger
+from tarefa import Tarefa
 
 app = Flask(__name__)
-swagger = Swagger(app)  # Evite sobrescrever o nome da classe
+swagger = Swagger(app)
 
 tarefas = [
-    {
-        "id": 1,
-        "titulo": "Estudar js",
-        "descricao": "Estudar para aprender a construir eventos",
-        "status": "Em andamento",
-        "prioridade": "Alta",
-        "dataConclusao": "2024-06-30",
-        "categoria": "Estudos"
-    },
-    {
-        "id": 2,
-        "titulo": "Arrumar a casa",
-        "descricao": "Arrumar a casa para a proxima tarefa",
-        "status": "Nao iniciado",
-        "prioridade": "Media",
-        "dataConclusao": "2024-06-20",
-        "categoria": "Casa"
-    },
-    {
-        "id": 3,
-        "titulo": "Fazer compras",
-        "descricao": "Comprar mantimentos para a semana",
-        "status": "Pendente",
-        "prioridade": "Alta",
-        "dataConclusao": "2024-06-15",
-        "categoria": "Compras"
-    },
-    {
-        "id": 4,
-        "titulo": "Academia",
-        "descricao": "Treinar pernas e bracos",
-        "status": "Em andamento",
-        "prioridade": "Baixa",
-        "dataConclusao": "2024-06-25",
-        "categoria": "Saude"
-    },
-    {
-        "id": 5,
-        "titulo": "Ler um livro",
-        "descricao": "Terminar a leitura do livro atual",
-        "status": "Pendente",
-        "prioridade": "Media",
-        "dataConclusao": "2024-07-01",
-        "categoria": "Lazer"
-    }
+    Tarefa(
+        task_id=1,
+        titulo="Estudar js",
+        descricao= "Estudar para aprender a construir eventos",
+        status= "Em andamento",
+        prioridade="Alta",
+        categoria="Estudos",
+        dataConclusao="2024-06-30").to_json(),
+    Tarefa(
+        task_id=2,
+        titulo="Arrumar a casa",
+        descricao="Arrumar a casa para a proxima tarefa",
+        status="Nao iniciado",
+        prioridade="Media",
+        categoria="Casa",
+        dataConclusao="2024-06-20").to_json(),
+    Tarefa(
+        task_id=3,
+        titulo="Praticar HTML e CSS",
+        descricao="Criar um layout responsivo para melhorar habilidades",
+        status="Nao iniciado",
+        prioridade="Media",
+        categoria="Desenvolvimento Web",
+        dataConclusao="2024-07-15").to_json()
 ]
 
 @app.route('/tasks', methods=['GET'])
@@ -117,7 +97,7 @@ def get_task_by_id(task_id):
         description: Tarefa não encontrada
     """
     for tarefa in tarefas:
-        if tarefa.get('id') == task_id:
+        if tarefa.get('task_id') == task_id:
             return jsonify(tarefa)
     return jsonify({"error": "Tarefa não encontrada"}), 404
 
@@ -167,8 +147,8 @@ def create_task():
               type: string
     """
     task = request.json
-    ultimo_id = tarefas[-1].get('id') + 1 if tarefas else 1
-    task['id'] = ultimo_id
+    ultimo_id = tarefas[-1].get('task_id') + 1 if tarefas else 1
+    task['task_id'] = ultimo_id
     tarefas.append(task)
     return jsonify(task), 201
 
@@ -226,7 +206,7 @@ def update_task(task_id):
     """
     task_search = None
     for tarefa in tarefas:
-        if tarefa.get('id') == task_id:
+        if tarefa.get('task_id') == task_id:
             task_search = tarefa
             break
 
@@ -261,7 +241,7 @@ def delete_task(task_id):
         description: Tarefa não encontrada
     """
     for tarefa in tarefas:
-        if tarefa.get('id') == task_id:
+        if tarefa.get('task_id') == task_id:
             tarefas.remove(tarefa)
             return jsonify({"message": "Tarefa excluída"}), 200
     return jsonify({"error": "Tarefa não encontrada"}), 404
